@@ -17,6 +17,7 @@ public:
         array_ = new T[capacity_];
     }
 
+    //copy constructor
     SmartArray(const SmartArray<T> &other): size_(other.size_),
                                             capacity_(other.capacity_) {
         array_ = new T[capacity_];
@@ -25,6 +26,7 @@ public:
         }
     }
 
+    //move constructor
     SmartArray(const SmartArray &&other) noexcept: size_(other.size_),
                                                    capacity_(other.capacity_),
                                                    array_(other.array_) {
@@ -32,6 +34,22 @@ public:
 
     ~SmartArray() {
         delete[] array_;
+    }
+
+    //copy assignment operator
+    SmartArray<T>& operator=(const SmartArray& other) {
+        if (this == &other) {
+            return *this;
+        }
+        SmartArray<T> otherToCopy = SmartArray(other);
+        swap(otherToCopy, *this);
+        return *this;
+    }
+
+    //move assignment operator
+    SmartArray<T>& operator=(SmartArray&& other) noexcept {
+        swap(other, *this);
+        return *this;
     }
 
     const int& getSize() const {
@@ -125,6 +143,12 @@ private:
     int size_;
     int capacity_;
     T *array_;
+
+    void swap(const SmartArray& other) {
+        size_ = other.size_;
+        capacity_ = other.capacity_;
+        array_ = other.array_;
+    }
 };
 
 template<typename T>
