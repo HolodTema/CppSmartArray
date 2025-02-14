@@ -4,5 +4,9 @@
 int main()
 {
     testAdd();
+    testPop();
+    testEmptyPop();
+    testSort();
+    testFind();
     return 0;
 }
