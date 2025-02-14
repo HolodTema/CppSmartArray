@@ -7,6 +7,7 @@
 
 #include <stdexcept>
 #include <iostream>
+#include "smartArrayExceptions.h"
 
 template<typename T>
 class SmartArray {
@@ -33,12 +34,8 @@ public:
         delete[] array_;
     }
 
-    int getSize() const {
+    const int& getSize() const {
         return size_;
-    }
-
-    int getCapacity() const {
-        return capacity_;
     }
 
     void add(const T &element) {
@@ -55,8 +52,68 @@ public:
         ++size_;
     }
 
+    const T& pop() {
+        if (size_ > 0) {
+            T result = array_[--size_];
+            array_[size_] = 0;
+            return result;
+        }
+        else {
+            throw PopEmptyArrayException();
+        }
+    }
+
+    int find(const T& element) const {
+        for (int i = 0; i < size_; ++i) {
+            if (element == array_[i]) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    bool contains(const T& element) const {
+        for (int i = 0; i < size_; ++i) {
+            if (element == array_[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool isEmpty() const {
+        return size_ == 0;
+    }
+
+    SmartArray<T>& sort() {
+        if (size_ <= 1) {
+            return *this;
+        }
+
+        for (int i = 0; i < size_; ++i) {
+            for (int j = 0; j < size_-1; ++j) {
+                if (array_[j] > array_[j+1]) {
+                    std::swap(array_[j], array_[j+1]);
+                }
+            }
+        }
+        return *this;
+    }
+
+    void clear() {
+        delete[] array_;
+        capacity_ = START_CAPACITY;
+        array_ = new T[capacity_];
+        size_ = 0;
+    }
+
     T &operator[](const int &index) const {
-        return array_[index];
+        if (index < size_) {
+            return array_[index];
+        }
+        else {
+            throw IndexOutOfRangeException();
+        }
     }
 
     template<typename T1>

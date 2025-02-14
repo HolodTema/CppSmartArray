@@ -4,4 +4,5 @@ project(SmartArray)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(SmartArray main.cpp
-        SmartArray.h)
+        SmartArray.h
+        smartArrayExceptions.h)
